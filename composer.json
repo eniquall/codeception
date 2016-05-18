@@ -1,0 +1,17 @@
+{
+  "name": "eniquall/ExtWebDriver",
+  "description": "extended codeception WebDriver",
+  "authors": [
+    {
+      "name": "Navozenko Dmytro",
+      "email": "eniquall@gmail.com"
+    }
+  ],
+  "require": {
+  },
+  "autoload": {
+    "psr-4": {
+      "Codeception\\Module\\": "src"
+    }
+  }
+}
