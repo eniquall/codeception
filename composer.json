@@ -7,7 +7,6 @@
       "email": "eniquall@gmail.com"
     }
   ],
-  "minimum-stability": "stable",
   "require": {
   },
   "autoload": {
