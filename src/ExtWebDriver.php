@@ -2,6 +2,7 @@
 namespace Codeception\Module;
 
 use Codeception\Module\WebDriver;
+use Facebook\WebDriver\WebDriverElement;
 
 class ExtWebDriver extends WebDriver
 {
@@ -18,12 +19,27 @@ class ExtWebDriver extends WebDriver
 
 	/**
 	 * @param $selector
-	 * @return array|mixed
+	 * @return WebDriverElement
 	 */
 	public function getElement($selector)
 	{
 		$els = $this->_findElements($selector);
-		return $els ? reset($els) : $els;
+		if (!empty($els) && is_array($els)) {
+			return reset($els); // return first element
+		}
+
+		// nothing was found
+		return null;
+	}
+
+	/**
+	 * Wrapper for WebDriver->_findElements()
+	 * @param $selector
+	 * @return array
+	 */
+	public function getElements($selector)
+	{
+		return $this->_findElements($selector);
 	}
 
 	/**
