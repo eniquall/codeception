@@ -1,6 +1,7 @@
 <?php
 namespace Codeception\Module;
 
+use Codeception\Lib\ModuleContainer;
 use Codeception\TestCase;
 use Facebook\WebDriver\WebDriverElement;
 
@@ -12,6 +13,8 @@ class ExtWebDriver extends \Codeception\Module\WebDriver
         // prepare build name for sauceLabs
         if (!empty($_SERVER["JENKINS_BUILD_NUMBER"])) {
             $config["build"] = $_SERVER["JENKINS_BUILD_NUMBER"];
+        } else {
+            $config["build"] = 'test';
         }
         
         parent::__construct($moduleContainer, $config);
