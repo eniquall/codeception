@@ -6,74 +6,84 @@ use Facebook\WebDriver\WebDriverElement;
 
 class ExtWebDriver extends \Codeception\Module\WebDriver
 {
-	public $sessionId;
-	/**
-	 * Public version of protected WebDriver->findElement()
-	 * @param $selector
-	 * @return mixed
-	 */
-	public function getField($selector)
-	{
-		$arr = $this->findFields($selector);
-		return reset($arr);
-	}
+    public $sessionId;
+    
+    public function __construct(ModuleContainer $moduleContainer, $config) {
+        // prepare build name for sauceLabs
+        if (!empty($_SERVER["JENKINS_BUILD_NUMBER"])) {
+            $config["build"] = $_SERVER["JENKINS_BUILD_NUMBER"];
+        }
+        
+        parent::__construct($moduleContainer, $config);
+    }
 
-	/**
-	 * @param $selector
-	 * @return WebDriverElement
-	 */
-	public function getElement($selector)
-	{
-		$els = $this->_findElements($selector);
-		if (!empty($els) && is_array($els)) {
-			return reset($els); // return first element
-		}
+    /**
+     * Public version of protected WebDriver->findElement()
+     * @param $selector
+     * @return mixed
+     */
+    public function getField($selector)
+    {
+        $arr = $this->findFields($selector);
+        return reset($arr);
+    }
 
-		// nothing was found
-		return null;
-	}
+    /**
+     * @param $selector
+     * @return WebDriverElement
+     */
+    public function getElement($selector)
+    {
+        $els = $this->_findElements($selector);
+        if (!empty($els) && is_array($els)) {
+            return reset($els); // return first element
+        }
 
-	/**
-	 * Wrapper for WebDriver->_findElements()
-	 * @param $selector
-	 * @return array
-	 */
-	public function getElements($selector)
-	{
-		return $this->_findElements($selector);
-	}
+        // nothing was found
+        return null;
+    }
 
-	/**
-	 * @param $selector
-	 * @throws \Exception
-	 */
-	public function clickElement($selector)
-	{
-		$el = $this->getElement($selector);
+    /**
+     * Wrapper for WebDriver->_findElements()
+     * @param $selector
+     * @return array
+     */
+    public function getElements($selector)
+    {
+        return $this->_findElements($selector);
+    }
 
-		if ($el) {
-			$el->click();
-		} else {
-			throw new \Exception('Element can\'t be found: "' . $selector . '"');
-		}
-	}
+    /**
+     * @param $selector
+     * @throws \Exception
+     */
+    public function clickElement($selector)
+    {
+        $el = $this->getElement($selector);
 
-	public function getSessionID()
-	{
-		return $this->sessionId;
-	}
+        if ($el) {
+            $el->click();
+        } else {
+            throw new \Exception('Element can\'t be found: "' . $selector . '"');
+        }
+    }
 
-	// save sessionId before it will be unset by parent::_after()
-	public function _afterSuite()
-	{
-		$this->sessionId = $this->sessionId ?: $this->webDriver->getSessionID();
-		parent::_afterSuite();
-	}
+    public function getSessionID()
+    {
+        return $this->sessionId;
+    }
 
-	// save sessionId before it will be unset by parent::_after()
-	public function _after(TestCase $test)
-	{
-		$this->sessionId = $this->sessionId ?: $this->webDriver->getSessionID();
-		parent::_afterSuite($test);
-	}
+    // save sessionId before it will be unset by parent::_after()
+    public function _afterSuite()
+    {
+        $this->sessionId = $this->sessionId ?: $this->webDriver->getSessionID();
+        parent::_afterSuite();
+    }
+
+    // save sessionId before it will be unset by parent::_after()
+    public function _after(TestCase $test)
+    {
+        $this->sessionId = $this->sessionId ?: $this->webDriver->getSessionID();
+        parent::_afterSuite($test);
+    }
 }
