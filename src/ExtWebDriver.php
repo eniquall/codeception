@@ -1,11 +1,12 @@
 <?php
 namespace Codeception\Module;
 
-use Codeception\Module\WebDriver;
+use Codeception\TestCase;
 use Facebook\WebDriver\WebDriverElement;
 
-class ExtWebDriver extends WebDriver
+class ExtWebDriver extends \Codeception\Module\WebDriver
 {
+	public $sessionId;
 	/**
 	 * Public version of protected WebDriver->findElement()
 	 * @param $selector
@@ -55,5 +56,24 @@ class ExtWebDriver extends WebDriver
 		} else {
 			throw new \Exception('Element can\'t be found: "' . $selector . '"');
 		}
+	}
+
+	public function getSessionID()
+	{
+		return $this->sessionId;
+	}
+
+	// save sessionId before it will be unset by parent::_after()
+	public function _afterSuite()
+	{
+		$this->sessionId = $this->sessionId ?: $this->webDriver->getSessionID();
+		parent::_afterSuite();
+	}
+
+	// save sessionId before it will be unset by parent::_after()
+	public function _after(TestCase $test)
+	{
+		$this->sessionId = $this->sessionId ?: $this->webDriver->getSessionID();
+		parent::_afterSuite($test);
 	}
 }
