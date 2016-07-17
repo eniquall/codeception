@@ -11,10 +11,9 @@ class ExtWebDriver extends \Codeception\Module\WebDriver
     
     public function __construct(ModuleContainer $moduleContainer, $config) {
         // prepare build name for sauceLabs
+
         if (!empty($_SERVER["JENKINS_BUILD_NUMBER"])) {
             $config["build"] = $_SERVER["JENKINS_BUILD_NUMBER"];
-        } else {
-            $config["build"] = 'test';
         }
         
         parent::__construct($moduleContainer, $config);
