@@ -18,7 +18,19 @@ class ExtWebDriver extends \Codeception\Module\WebDriver
         
         parent::__construct($moduleContainer, $config);
     }
-
+    
+    /**
+     * Override method to add test name to the capabilities.
+     * Name will be shown in sauce labs / testing bot / browser stack services
+     *
+     * @param TestCase $test
+     */
+    public function _before(TestCase $test)
+    {
+        $this->config['capabilities']['name'] = get_class($test->getTestClass()) . ':' . $test->getName();
+        parent::_before($test);
+    }
+    
     /**
      * Public version of protected WebDriver->findElement()
      * @param $selector
