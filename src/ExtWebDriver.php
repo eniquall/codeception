@@ -87,6 +87,7 @@ class ExtWebDriver extends \Codeception\Module\WebDriver
         return $this->sessionId;
     }
 
+    /*
     // save sessionId before it will be unset by parent::_after()
     public function _afterSuite()
     {
@@ -100,4 +101,5 @@ class ExtWebDriver extends \Codeception\Module\WebDriver
         $this->sessionId = $this->sessionId ?: $this->webDriver->getSessionID();
         parent::_afterSuite($test);
     }
+    */
 }
