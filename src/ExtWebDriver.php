@@ -28,6 +28,7 @@ class ExtWebDriver extends \Codeception\Module\WebDriver
     public function _before(TestCase $test)
     {
         $this->config['capabilities']['name'] = get_class($test->getTestClass()) . ':' . $test->getName();
+        $this->capabilities['name'] = get_class($test->getTestClass()) . ':' . $test->getName();
         parent::_before($test);
     }
     
